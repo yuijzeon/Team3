@@ -20,7 +20,7 @@ public class BudgetService
 
         if (budgets.Count == 1)
         {
-            return budgets[0].AmountPerDay * ((end - start).Days + 1);
+            return budgets.First().AmountPerDay * ((end - start).Days + 1);
         }
 
         var budgetOfStart = budgets.FirstOrDefault(x => x.YearMonthEqual(start), Budget.Empty(start));
