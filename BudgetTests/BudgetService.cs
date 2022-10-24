@@ -16,25 +16,21 @@ public class BudgetService
             return 0m;
         }
 
-        var budgetsOfStart = _budgetRepo.GetAll().FirstOrDefault(x => x.YearMonth.Equals(start.ToString("yyyyMM")));
-        var budgetsOfMiddle = _budgetRepo.GetAll().Where(x => x.GetDateTime(x.Days) < end && x.GetDateTime(1) > start);
-        var budgetOfEnd = _budgetRepo.GetAll().FirstOrDefault(x => x.YearMonth.Equals(end.ToString("yyyyMM")));
+        var budgets = _budgetRepo.GetAll().Where(x => start <= x.GetDateTime(x.Days) && end >= x.GetDateTime(1)).ToList();
 
-        if (budgetsOfStart == null)
+        if (budgets.Count == 1)
         {
-            return 0m;
+            return budgets[0].AmountPerDay * ((end - start).Days + 1);
         }
 
-        if (start.ToString("yyyyMM") == end.ToString("yyyyMM"))
-        {
-            return budgetsOfStart.Amount / budgetsOfStart.Days * ((end - start).Days + 1);
-        }
+        var budgetOfStart = budgets.FirstOrDefault(x => x.YearMonthEqual(start), Budget.Empty(start));
+        var budgetsOfMiddle = budgets.Where(x => start < x.GetDateTime(1) && x.GetDateTime(x.Days) < end);
+        var budgetOfEnd = budgets.FirstOrDefault(x => x.YearMonthEqual(end), Budget.Empty(start));
 
         var totalAmount = 0m;
-        totalAmount += budgetsOfStart.Amount / budgetsOfStart.Days * (budgetsOfStart.Days - start.Day + 1);
-        totalAmount += budgetOfEnd.Amount / budgetOfEnd.Days * (end.Day);
-
+        totalAmount += budgetOfStart.AmountPerDay * (budgetOfStart.Days - start.Day + 1);
         totalAmount += budgetsOfMiddle.Sum(x => x.Amount);
+        totalAmount += budgetOfEnd.AmountPerDay * end.Day;
 
         return totalAmount;
     }

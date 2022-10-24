@@ -20,8 +20,23 @@ public class Budget
 
     public int Days => DateTime.DaysInMonth(_year, _month);
 
+    public decimal AmountPerDay => (decimal)Amount / Days;
+
     public DateTime GetDateTime(int day)
     {
         return new DateTime(_year, _month, day);
+    }
+
+    public bool YearMonthEqual(DateTime dateTime)
+    {
+        return YearMonth.Equals(dateTime.ToString("yyyyMM"));
+    }
+
+    public static Budget Empty(DateTime dateTime)
+    {
+        return new Budget
+        {
+            YearMonth = dateTime.ToString("yyyyMM")
+        };
     }
 }
