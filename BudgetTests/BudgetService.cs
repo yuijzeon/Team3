@@ -1,4 +1,7 @@
-﻿namespace BudgetTests;
+﻿using System;
+using System.Linq;
+
+namespace BudgetTests;
 
 public class BudgetService
 {

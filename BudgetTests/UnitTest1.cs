@@ -1,3 +1,5 @@
+using System;
+using System.Collections.Generic;
 using NSubstitute;
 using NSubstitute.Core;
 using NUnit.Framework;
@@ -21,7 +23,7 @@ public class Tests
     {
         _budgetRepo.GetAll().Returns(new List<Budget>
         {
-            new Budget
+            new()
             {
                 YearMonth = "202210",
                 Amount = 310000
@@ -88,14 +90,14 @@ public class Tests
     {
         GivenBudget(new List<Budget>
         {
-            CreateBudget("202209", 30),
-            CreateBudget("202210", 310000),
+            CreateBudget("202210", 31),
             CreateBudget("202211", 3000),
-            CreateBudget("202212", 31)
+            CreateBudget("202212", 310000),
+            CreateBudget("202301", 31),
         });
 
-        var amount = _budgetService.Query(new DateTime(2022, 9, 1), new DateTime(2022, 12, 30));
-        Assert.That(amount, Is.EqualTo(30 + 310000m + 3000m + 30m));
+        var amount = _budgetService.Query(new DateTime(2022, 10, 1), new DateTime(2023, 1, 30));
+        Assert.That(amount, Is.EqualTo(31 + 310000m + 3000m + 30m));
     }
 
     [Test]
