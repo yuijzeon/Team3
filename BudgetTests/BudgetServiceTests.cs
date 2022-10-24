@@ -1,4 +1,3 @@
-using System.Globalization;
 using NSubstitute;
 using NSubstitute.Core;
 using NUnit.Framework;
@@ -15,7 +14,7 @@ public class BudgetServiceTests
     {
         _budgetRepo = Substitute.For<IBudgetRepo>();
         _budgetService = new BudgetService(_budgetRepo);
-        
+
         GivenBudgets(new List<Budget>
         {
             CreateBudget("202209", 31),
