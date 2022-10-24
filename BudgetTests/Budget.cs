@@ -1,27 +1,38 @@
-﻿namespace BudgetTests;
+﻿using System.Globalization;
+
+namespace BudgetTests;
 
 public class Budget
 {
-    private int _month;
-
-    private int _year;
+    private DateTime _yearMonth;
 
     public string YearMonth
     {
-        get => _year + _month.ToString("00");
-        set
-        {
-            _year = int.Parse(value.Substring(0, 4));
-            _month = int.Parse(value.Substring(4, 2));
-        }
+        get => _yearMonth.ToString("yyyyMM");
+        set => _yearMonth = DateTime.ParseExact(value, "yyyyMM", CultureInfo.InvariantCulture);
     }
 
     public int Amount { get; set; }
 
-    public int Days => DateTime.DaysInMonth(_year, _month);
+    public int Days => DateTime.DaysInMonth(_yearMonth.Year, _yearMonth.Month);
+
+    public decimal AmountPerDay => (decimal)Amount / Days;
 
     public DateTime GetDateTime(int day)
     {
-        return new DateTime(_year, _month, day);
+        return new DateTime(_yearMonth.Year, _yearMonth.Month, day);
+    }
+
+    public bool YearMonthEqual(DateTime value)
+    {
+        return _yearMonth.Year == value.Year && _yearMonth.Month == value.Month;
+    }
+
+    public static Budget Empty(DateTime dateTime)
+    {
+        return new Budget
+        {
+            YearMonth = dateTime.ToString("yyyyMM")
+        };
     }
 }
