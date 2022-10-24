@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-
-namespace BudgetTests;
+﻿namespace BudgetTests;
 
 public interface IBudgetRepo
 {

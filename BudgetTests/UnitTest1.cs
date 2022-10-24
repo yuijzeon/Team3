@@ -1,5 +1,3 @@
-using System;
-using System.Collections.Generic;
 using NSubstitute;
 using NSubstitute.Core;
 using NUnit.Framework;
@@ -8,8 +6,8 @@ namespace BudgetTests;
 
 public class Tests
 {
-    private BudgetService _budgetService;
-    private IBudgetRepo? _budgetRepo;
+    private BudgetService _budgetService = null!;
+    private IBudgetRepo _budgetRepo = null!;
 
     [SetUp]
     public void SetUp()
