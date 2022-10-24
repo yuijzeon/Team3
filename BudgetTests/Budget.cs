@@ -25,7 +25,7 @@ public class Budget
 
     public bool YearMonthEqual(DateTime value)
     {
-        return _yearMonth.Year == value.Year && _yearMonth.Month == value.Month;
+        return YearMonth.Equals(value.ToString("yyyyMM"));
     }
 
     public static Budget Empty(DateTime dateTime)
