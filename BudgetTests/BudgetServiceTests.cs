@@ -4,7 +4,7 @@ using NUnit.Framework;
 
 namespace BudgetTests;
 
-public class Tests
+public class BudgetServiceTests
 {
     private BudgetService _budgetService = null!;
     private IBudgetRepo _budgetRepo = null!;
