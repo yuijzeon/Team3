@@ -17,7 +17,8 @@ public class BudgetServiceTests
 
         GivenBudgets(new List<Budget>
         {
-            CreateBudget("202209", 31),
+            CreateBudget("202206", 30000),
+            CreateBudget("202209", 30),
             CreateBudget("202210", 310000),
             CreateBudget("202211", 3000),
             CreateBudget("202212", 31),
@@ -28,42 +29,42 @@ public class BudgetServiceTests
     public void one_month()
     {
         var amount = _budgetService.Query(new DateTime(2022, 10, 1), new DateTime(2022, 10, 31));
-        Assert.That(amount, Is.EqualTo(310000m));
+        Assert.That(amount, Is.EqualTo(310000));
     }
 
     [Test]
     public void one_day()
     {
         var amount = _budgetService.Query(new DateTime(2022, 10, 1), new DateTime(2022, 10, 1));
-        Assert.That(amount, Is.EqualTo(10000m));
+        Assert.That(amount, Is.EqualTo(10000));
     }
 
     [Test]
     public void cross_days()
     {
         var amount = _budgetService.Query(new DateTime(2022, 10, 1), new DateTime(2022, 10, 6));
-        Assert.That(amount, Is.EqualTo(60000m));
+        Assert.That(amount, Is.EqualTo(60000));
     }
 
     [Test]
     public void cross_months()
     {
         var amount = _budgetService.Query(new DateTime(2022, 10, 30), new DateTime(2022, 11, 5));
-        Assert.That(amount, Is.EqualTo(20000m + 500m));
+        Assert.That(amount, Is.EqualTo(20000 + 500));
     }
 
     [Test]
     public void cross_three_months()
     {
         var amount = _budgetService.Query(new DateTime(2022, 10, 30), new DateTime(2022, 12, 1));
-        Assert.That(amount, Is.EqualTo(20000m + 3000m + 1m));
+        Assert.That(amount, Is.EqualTo(20000 + 3000 + 1));
     }
 
     [Test]
     public void cross_four_months()
     {
         var amount = _budgetService.Query(new DateTime(2022, 9, 1), new DateTime(2022, 12, 31));
-        Assert.That(amount, Is.EqualTo(31 + 310000m + 3000m + 31m));
+        Assert.That(amount, Is.EqualTo(30 + 310000 + 3000 + 31));
     }
 
     [Test]
@@ -71,6 +72,13 @@ public class BudgetServiceTests
     {
         var amount = _budgetService.Query(new DateTime(2022, 10, 30), new DateTime(2022, 1, 5));
         Assert.That(amount, Is.EqualTo(0));
+    }
+    
+    [Test]
+    public void some_month_no_data()
+    {
+        var amount = _budgetService.Query(new DateTime(2022, 5, 1), new DateTime(2022, 9, 1));
+        Assert.That(amount, Is.EqualTo(30000 + 1));
     }
 
     [Test]
